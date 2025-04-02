@@ -1,0 +1,1 @@
+This folder contains assets for CSR web app, including images, icons, and fonts.

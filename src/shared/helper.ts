@@ -1,0 +1,1 @@
+// A TypeScript file housing utility functions and helpers used across the application

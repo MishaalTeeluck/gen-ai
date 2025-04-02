@@ -1,0 +1,1 @@
+// A file encapsulating the logic, including functions and hooks, for the main App component
