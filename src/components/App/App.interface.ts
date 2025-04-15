@@ -1,1 +1,0 @@
-// A file defining the interface for all props of the App component
