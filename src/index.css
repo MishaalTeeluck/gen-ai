@@ -9,8 +9,14 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-body{
-  background: linear-gradient(to bottom, #ffffff 0%, #4169e1 100%);
+body {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 0, 0, 0.7),
+    rgba(255, 20, 147, 0.7),
+    rgba(138, 43, 226, 0.7),
+    rgba(65, 105, 225, 0.7)
+  );
 }
 
 @media (prefers-color-scheme: light) {
