@@ -11,9 +11,6 @@ export const Footer = () => {
       right="0"
     >
       <Box maxWidth="1200px" margin="0 auto" textAlign="center">
-        <Text fontSize="sm">
-          Copyright &copy; 2025 VINCI. All rights reserved.
-        </Text>
         <Text fontSize="sm" mt={1}>
         <Box as="span" fontWeight="bold">Disclaimer:</Box> AI-generated content may not be 100% accurate. Please verify
           accurately.

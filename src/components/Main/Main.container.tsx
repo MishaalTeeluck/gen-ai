@@ -14,7 +14,7 @@ export const MainContainer = () => {
         'This tool generates a test plan  based on the technical specifications.',
       queue: '1',
       eta: '1',
-      link: '',
+      link: 'tools/testplangenerator/uploadfile',
     },
     {
       name: 'Minutes of meeting generator',
