@@ -1,0 +1,17 @@
+.custom-grid {
+  min-height: 600px;
+}
+
+.custom-grid .rdg-header-row {
+  background-color: #72A0C1 !important;
+  color: black !important;
+}
+
+.custom-grid .rdg-row {
+  background-color: white !important;
+  color: black !important;
+}
+
+.custom-grid .rdg-cell {
+  border: 1px solid #ccc !important;
+}

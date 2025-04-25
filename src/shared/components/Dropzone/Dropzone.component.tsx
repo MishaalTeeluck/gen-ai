@@ -2,8 +2,14 @@ import { FileUpload, Icon, Box } from '@chakra-ui/react';
 import { LuUpload } from 'react-icons/lu';
 import { useDropzoneHandlers } from './Dropzone.container';
 
-export const DropzoneComponent = () => {
-  const handlers = useDropzoneHandlers();
+type DropzoneComponentProps = {
+  setUploadedFile: React.Dispatch<React.SetStateAction<File | null>>;
+};
+
+export const DropzoneComponent = ({
+  setUploadedFile,
+}: DropzoneComponentProps) => {
+  const handlers = useDropzoneHandlers(setUploadedFile);
 
   return (
     <FileUpload.Root
