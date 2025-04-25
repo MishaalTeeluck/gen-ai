@@ -1,9 +1,20 @@
-import { Center, Box, HStack, Button, VStack, Icon, Text } from '@chakra-ui/react';
+import {
+  Center,
+  Box,
+  HStack,
+  Button,
+  VStack,
+  Icon,
+  Text,
+} from '@chakra-ui/react';
 import { LuFileText, LuClock } from 'react-icons/lu';
 import { BackButtonComponent } from '../../../../shared/components/BackButton/BackButton.component';
 import { DropzoneComponent } from '../../../../shared/components/Dropzone/Dropzone.component';
+import { UploadFileContainer } from './UploadFile.container';
 
 export const UploadFileComponent = () => {
+  const handler = UploadFileContainer();
+
   return (
     <>
       <BackButtonComponent />
@@ -13,12 +24,12 @@ export const UploadFileComponent = () => {
         justifyContent='center'
       >
         <Box width='100%' maxW='lg'>
-          <DropzoneComponent />
+          <DropzoneComponent setUploadedFile={handler.setUploadedFile} />
         </Box>
 
         <HStack mt='8' width='100%' maxW='md' justify='space-between'>
           <Button
-            onClick={() => console.log('Generate Test Plan clicked')}
+            onClick={handler.handleGenerateClick}
             boxShadow='md'
             borderRadius='xl'
             p={4}

@@ -1,17 +1,14 @@
-import { useState } from 'react';
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
-export const useDropzoneHandlers = () => {
-  const [, setFiles] = useState<File[]>([]);
-
+export const useDropzoneHandlers = (setUploadedFile: React.Dispatch<React.SetStateAction<File | null>>) => {
   const handleFiles = (incomingFiles: File[]) => {
     if (incomingFiles.length > 0) {
-      setFiles([incomingFiles[0]]);
+      setUploadedFile(incomingFiles[0]);
     }
   };
 
   const handleRejection = () => {
-    setFiles([]);
+    setUploadedFile(null);
     toast.error(
       'Invalid file type. Only PDF, Word, or Text files are allowed.',
       {
