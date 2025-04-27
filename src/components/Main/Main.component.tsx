@@ -1,13 +1,22 @@
 import { Stack } from '@chakra-ui/react';
 import { GenAICardComponent } from '../../shared/components/GenAIToolCard/GenAIToolCard.component';
-import { MainContainer } from './Main.container';
+import { genAITools } from './Main.constants';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 export const MainComponent = () => {
-  const mainState = MainContainer();
+
+  const searchValue = useSelector((state: RootState) => state.header.searchValue);
+
+  const filteredTools = genAITools.filter((tool) =>
+    (tool.name + tool.description)
+      .toLowerCase()
+      .includes(searchValue.toLowerCase())
+  );
 
   return (
     <Stack direction={{ base: 'column', md: 'row' }} gap='3' wrap='wrap'>
-      {mainState.map((item, index) => (
+      {filteredTools.map((item, index) => (
         <GenAICardComponent
           key={index}
           toolName={item.name}
