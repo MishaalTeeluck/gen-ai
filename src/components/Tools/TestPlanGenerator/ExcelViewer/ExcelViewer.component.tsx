@@ -1,12 +1,10 @@
 import {
   Container,
-  VStack,
   Input,
   Box,
   Center,
   Flex,
   IconButton,
-  EmptyState,
 } from '@chakra-ui/react';
 import { DataGrid } from 'react-data-grid';
 import { ExcelViewerContainer } from './ExcelViewer.container';
@@ -15,6 +13,7 @@ import { BackButtonComponent } from '../../../../shared/components/BackButton/Ba
 import { IoIosSave } from 'react-icons/io';
 import './ExcelViewer.component.css';
 import { LuDatabase } from 'react-icons/lu';
+import { EmptyTableBox } from '../../../../shared/components/EmptyTableBox/EmptyTableBox.component';
 
 export const ExcelViewerComponent = () => {
   const excelViewerHandler = ExcelViewerContainer();
@@ -44,7 +43,7 @@ export const ExcelViewerComponent = () => {
         <Box
           w='100%'
           height={excelViewerHandler.loaded ? '600px' : '300px'}
-          borderRadius='md'
+          borderRadius='xl'
           background='white'
         >
           {excelViewerHandler.loaded ? (
@@ -63,28 +62,11 @@ export const ExcelViewerComponent = () => {
               }}
             />
           ) : (
-            <Flex
-              height='100%'
-              align='center'
-              justify='center'
-              direction='column'
-              textAlign='center'
-            >
-              <EmptyState.Root>
-                <EmptyState.Content>
-                  <EmptyState.Indicator>
-                    <LuDatabase />
-                  </EmptyState.Indicator>
-                  <VStack>
-                    <EmptyState.Title>No Data Available</EmptyState.Title>
-                    <EmptyState.Description>
-                      Data is currently unavailable. Please check back later or
-                      refresh the page.
-                    </EmptyState.Description>
-                  </VStack>
-                </EmptyState.Content>
-              </EmptyState.Root>
-            </Flex>
+            <EmptyTableBox
+              title='No Data Available'
+              description='Data is currently unavailable. Please check back later or refresh the page.'
+              icon={<LuDatabase />}
+            />
           )}
         </Box>
 
