@@ -1,0 +1,38 @@
+.gray-textfield {
+  background-color: #f1f1f1;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #333;
+  outline: none;
+  width: 100%;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gray-textfield::placeholder {
+  color: #888; /* placeholder text color */
+}
+
+.gray-textfield:focus {
+  border-color: #999;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
+.history-custom-grid {
+  border-radius: 10px;
+}
+
+.history-custom-grid .rdg-header-row {
+  background-color: #72a0c1 !important;
+  color: black !important;
+}
+
+.history-custom-grid .rdg-row {
+  background-color: white !important;
+  color: black !important;
+}
+
+.history-custom-grid .rdg-cell {
+  border-bottom: 1px solid #ccc !important;
+}
+
+
