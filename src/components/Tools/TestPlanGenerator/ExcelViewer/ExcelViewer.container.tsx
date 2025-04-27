@@ -8,12 +8,9 @@ export const ExcelViewerContainer = () => {
   const [rows, setRows] = useState<RowData[]>([]);
   const [loaded, setLoaded] = useState(false);
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
+  const handleBlob = async (blob: Blob) => {
     const workbook = new ExcelJS.Workbook();
-    const buffer = await file.arrayBuffer();
+    const buffer = await blob.arrayBuffer();
     await workbook.xlsx.load(buffer);
 
     const worksheet = workbook.worksheets[0];
@@ -27,6 +24,7 @@ export const ExcelViewerContainer = () => {
       > = {
         id: `row-${rowIndex}`,
       };
+
       row.eachCell((cell, colNumber) => {
         const key = `col-${colNumber - 1}`;
         rowData[key] = cell.value as
@@ -35,12 +33,13 @@ export const ExcelViewerContainer = () => {
           | boolean
           | null
           | undefined;
+
         if (rowIndex === 1) {
           loadedColumns.push({
             key,
             name: String(cell.value ?? `Column ${colNumber}`),
             editable: true,
-            renderEditCell: textEditor
+            renderEditCell: textEditor,
           });
         }
       });
@@ -53,6 +52,13 @@ export const ExcelViewerContainer = () => {
     setColumns(loadedColumns);
     setRows(loadedRows);
     setLoaded(true);
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    await handleBlob(file);
   };
 
   function rowKeyGetter(row: RowData) {

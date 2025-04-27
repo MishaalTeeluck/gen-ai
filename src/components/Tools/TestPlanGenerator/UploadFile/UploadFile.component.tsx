@@ -46,7 +46,7 @@ export const UploadFileComponent = () => {
           </Button>
 
           <Button
-            onClick={() => console.log('History clicked')}
+            onClick={handler.navigateToHistory}
             boxShadow='md'
             borderRadius='xl'
             p={4}

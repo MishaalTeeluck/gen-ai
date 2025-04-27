@@ -14,7 +14,12 @@ export const UploadFileContainer = () => {
     }
   };
 
+  const navigateToHistory = () => {
+    navigate('/tools/testplangenerator/history')
+  }
+
   return {
+    navigateToHistory,
     setUploadedFile,
     handleGenerateClick,
   };
