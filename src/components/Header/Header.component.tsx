@@ -10,14 +10,28 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
-import { HeaderContainer } from './Header.container';
+import { useSelector, useDispatch } from 'react-redux';
+import { setSearchValue } from '../../store/headerSlice'; // Import the action to update searchValue
 import { NotificationMenu } from '../../shared/components/Notification/Notification.component';
 import vinciLogo from '../../assets/vinci-logo.png';
 import languageIcon from '../../assets/language-changer.png';
 import './Header.component.css';
+import { RootState } from '../../store';
+import { useLocation } from 'react-router-dom';
 
 const Header = () => {
-  const formState = HeaderContainer();
+  const dispatch = useDispatch();
+  const location = useLocation();
+
+  const searchValue = useSelector(
+    (state: RootState) => state.header.searchValue
+  );
+  const userDetails = useSelector(
+    (state: RootState) => state.header.userDetails
+  );
+  const handleSearchChange = (value: string) => {
+    dispatch(setSearchValue(value));
+  };
 
   return (
     <header className='lg-header'>
@@ -37,16 +51,18 @@ const Header = () => {
         >
           <HStack>
             <Image src={vinciLogo} alt='vinci-logo' width='100px' />
-            <Box width='400px'>
-              <TextField
-                value={formState.searchValue}
-                setValue={formState.setSearchValue}
-                hasIcon
-                icon={<LuSearch />}
-                placeholder='Search your tool'
-                className='gray-textfield'
-              />
-            </Box>
+            {location.pathname === '/' && (
+              <Box width='400px'>
+                <TextField
+                  value={searchValue}
+                  setValue={handleSearchChange}
+                  hasIcon
+                  icon={<LuSearch />}
+                  placeholder='Search your tool'
+                  className='gray-textfield'
+                />
+              </Box>
+            )}
           </HStack>
           <HStack>
             <Image
@@ -57,15 +73,15 @@ const Header = () => {
             <NotificationMenu />
             <HStack width={'150px'}>
               <Avatar.Root>
-                <Avatar.Fallback name={formState.userDetails.name} />
-                <Avatar.Image src={formState.userDetails.avatar} width='30px' />
+                <Avatar.Fallback name={userDetails.name} />
+                <Avatar.Image src={userDetails.avatar} width='30px' />
               </Avatar.Root>
               <Stack align='flex-start'>
                 <Text fontWeight='medium' fontSize='sm'>
-                  {formState.userDetails.name}
+                  {userDetails.name}
                 </Text>
                 <Text color='gray.500' fontSize='xs'>
-                  {formState.userDetails.position}
+                  {userDetails.position}
                 </Text>
               </Stack>
             </HStack>

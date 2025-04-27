@@ -4,11 +4,15 @@ import { ChakraProvider, defaultSystem } from '@chakra-ui/react';
 import React from 'react';
 import { RouterProvider } from 'react-router-dom';
 import router from './routes/route.config';
+import { Provider } from 'react-redux';
+import store from './store';
 
 createRoot(document.getElementById('root')!).render(
-  <ChakraProvider value={defaultSystem}>
-    <React.StrictMode>
+  <Provider store={store}>
+    <ChakraProvider value={defaultSystem}>
+      <React.StrictMode>
         <RouterProvider router={router} />
-    </React.StrictMode>
-  </ChakraProvider>
+      </React.StrictMode>
+    </ChakraProvider>
+  </Provider>
 );
