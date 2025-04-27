@@ -1,9 +1,9 @@
-import { HTMLInputTypeAttribute, Dispatch, SetStateAction } from "react";
+import { HTMLInputTypeAttribute, Dispatch } from "react";
 
 export interface TextFieldProps {
   type?: HTMLInputTypeAttribute;
   value: string;
-  setValue: Dispatch<SetStateAction<string>>;
+  setValue: Dispatch<string>;
   hasIcon: boolean;
   icon: React.ReactNode;
   placeholder: string;
