@@ -1,7 +1,8 @@
 export interface GenAIToolCardProps{
-    toolName: string,
+    name: string,
     description: string,
-    queue: string,
-    eta: string, 
+    numOfQueues: string | number,
+    eta: string | number,
+    status: boolean,
     link: string
 }
