@@ -11,9 +11,17 @@ import { LuFileText, LuClock } from 'react-icons/lu';
 import { BackButtonComponent } from '../../../../shared/components/BackButton/BackButton.component';
 import { DropzoneComponent } from '../../../../shared/components/Dropzone/Dropzone.component';
 import { UploadFileContainer } from './UploadFile.container';
+import { useDispatch } from 'react-redux';
+import { setHeaderTitle } from '../../../../store/headerSlice';
+import { useEffect } from 'react';
 
 export const UploadFileComponent = () => {
   const handler = UploadFileContainer();
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setHeaderTitle('Test Plan Generator : Upload Document'));
+  }, [dispatch]);
 
   return (
     <>

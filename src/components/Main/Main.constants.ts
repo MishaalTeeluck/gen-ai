@@ -13,7 +13,7 @@ export const genAITools = [
             'This tool generates a test plan  based on the technical specifications.',
         queue: '1',
         eta: '1',
-        link: 'tools/testplangenerator/uploadfile',
+        link: '/tools/testplangenerator/uploadfile',
     },
     {
         name: 'Minutes of meeting generator',

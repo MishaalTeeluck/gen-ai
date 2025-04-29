@@ -10,28 +10,15 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
-import { useSelector, useDispatch } from 'react-redux';
-import { setSearchValue } from '../../store/headerSlice'; // Import the action to update searchValue
 import { NotificationMenu } from '../../shared/components/Notification/Notification.component';
+import { HeaderContainer } from './Header.container';
 import vinciLogo from '../../assets/vinci-logo.png';
 import languageIcon from '../../assets/language-changer.png';
 import './Header.component.css';
-import { RootState } from '../../store';
-import { useLocation } from 'react-router-dom';
 
 const Header = () => {
-  const dispatch = useDispatch();
-  const location = useLocation();
-
-  const searchValue = useSelector(
-    (state: RootState) => state.header.searchValue
-  );
-  const userDetails = useSelector(
-    (state: RootState) => state.header.userDetails
-  );
-  const handleSearchChange = (value: string) => {
-    dispatch(setSearchValue(value));
-  };
+  const headerHandler = HeaderContainer();
+  const userDetails = headerHandler.userDetails;
 
   return (
     <header className='lg-header'>
@@ -51,18 +38,25 @@ const Header = () => {
         >
           <HStack>
             <Image src={vinciLogo} alt='vinci-logo' width='100px' />
-            {location.pathname === '/' && (
-              <Box width='400px'>
+            <Box width='400px'>
+              {location.pathname === '/app' ? (
                 <TextField
-                  value={searchValue}
-                  setValue={handleSearchChange}
+                  value={headerHandler.searchValue}
+                  setValue={headerHandler.handleSearchChange}
                   hasIcon
                   icon={<LuSearch />}
                   placeholder='Search your tool'
                   className='gray-textfield'
                 />
-              </Box>
-            )}
+              ) : (
+                <Flex align='center' gap={2}>
+                  <Text fontWeight='light' fontSize='xl'>
+                    |
+                  </Text>
+                  <Text fontWeight='bold'>{headerHandler.headerTitle}</Text>
+                </Flex>
+              )}
+            </Box>
           </HStack>
           <HStack>
             <Image

@@ -1,18 +1,31 @@
-import { useState } from 'react';
-import UserIcon from '../../assets/user.png';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
+import { RootState } from '../../store';
+import { setSearchValue } from '../../store/headerSlice';
 
 export const HeaderContainer = () => {
-  const [searchValue, setSearchValue] = useState('');
+  const dispatch = useDispatch();
+  const componentLocation = useLocation();
 
-  const userDetails = {
-    name: 'User name',
-    position: 'Position',
-    avatar: UserIcon,
+  const searchValue = useSelector(
+    (state: RootState) => state.header.searchValue
+  );
+  const userDetails = useSelector(
+    (state: RootState) => state.header.userDetails
+  );
+  const handleSearchChange = (value: string) => {
+    dispatch(setSearchValue(value));
   };
 
+  const headerTitle = useSelector(
+    (state: RootState) => state.header.headerTitle
+  );
+
   return {
+    location: componentLocation,
     searchValue,
-    setSearchValue,
     userDetails,
+    handleSearchChange,
+    headerTitle,
   };
 };

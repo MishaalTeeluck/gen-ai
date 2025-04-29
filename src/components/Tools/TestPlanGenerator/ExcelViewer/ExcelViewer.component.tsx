@@ -14,9 +14,18 @@ import { IoIosSave } from 'react-icons/io';
 import './ExcelViewer.component.css';
 import { LuDatabase } from 'react-icons/lu';
 import { EmptyTableBox } from '../../../../shared/components/EmptyTableBox/EmptyTableBox.component';
+import { useDispatch } from 'react-redux';
+import { setHeaderTitle } from '../../../../store/headerSlice';
+import { useEffect } from 'react';
 
 export const ExcelViewerComponent = () => {
   const excelViewerHandler = ExcelViewerContainer();
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setHeaderTitle('Test Plan Generator : View Generated Test Plan'));
+  }, [dispatch]);
+
   return (
     <>
       <BackButtonComponent />

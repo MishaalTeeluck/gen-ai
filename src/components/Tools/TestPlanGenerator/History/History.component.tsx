@@ -13,9 +13,17 @@ import {
   historyRows,
   historyTableColumns,
 } from './History.constants';
+import { useDispatch } from 'react-redux';
+import { setHeaderTitle } from '../../../../store/headerSlice';
+import { useEffect } from 'react';
 
 export const HistoryComponent = () => {
   const historyHandlers = HistoryContainer();
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setHeaderTitle('Test Plan Generator : History'));
+  }, [dispatch]);
 
   const isLoaded = () => !historyHandlers.isHistoryRowsEmpty(historyRows);
   return (
