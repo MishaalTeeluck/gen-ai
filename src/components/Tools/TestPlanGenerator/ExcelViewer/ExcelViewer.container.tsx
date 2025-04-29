@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { GridColumns, RowData } from './ExcelViewer.interface';
 import ExcelJS from 'exceljs';
 import { RowsChangeData, textEditor } from 'react-data-grid';
+import { toast } from 'react-toastify';
 
 export const ExcelViewerContainer = () => {
   const [columns, setColumns] = useState<GridColumns[]>([]);
@@ -61,6 +62,23 @@ export const ExcelViewerContainer = () => {
     await handleBlob(file);
   };
 
+  const handleFetchExcelBlob = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_APIPORT}/api/path-to-excel-download`
+      );
+
+      if (!response.ok) {
+        toast.error('Failed to download the Excel file.');
+      }
+
+      const blob = await response.blob();
+      await handleBlob(blob);
+    } catch {
+      toast.error('Could not fetch and parse the Excel file.');
+    }
+  };
+
   function rowKeyGetter(row: RowData) {
     return row.id;
   }
@@ -106,6 +124,7 @@ export const ExcelViewerContainer = () => {
   };
 
   return {
+    handleFetchExcelBlob,
     handleFileUpload,
     handleRowsChange,
     handleExport,
