@@ -81,7 +81,7 @@ const getStatusColor = (status: string) => {
   }
 };
 
-export const historyRows: HistoryRow[] = [
+export const historyRowsList: HistoryRow[] = [
   {
     fileName: 'LoginModule_generated_test_plan.xlsx',
     status: 'Success',

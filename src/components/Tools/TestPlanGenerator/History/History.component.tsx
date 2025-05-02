@@ -10,7 +10,6 @@ import { EmptyTableBox } from '../../../../shared/components/EmptyTableBox/Empty
 import { DataGrid } from 'react-data-grid';
 import {
   dropdownItems,
-  historyRows,
   historyTableColumns,
 } from './History.constants';
 import { useDispatch } from 'react-redux';
@@ -25,7 +24,7 @@ export const HistoryComponent = () => {
     dispatch(setHeaderTitle('Test Plan Generator : History'));
   }, [dispatch]);
 
-  const isLoaded = () => !historyHandlers.isHistoryRowsEmpty(historyRows);
+  const isLoaded = () => historyHandlers.filteredAndSortedRows.length > 0;
   return (
     <>
       <Flex
