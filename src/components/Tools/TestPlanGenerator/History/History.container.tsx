@@ -1,13 +1,36 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { HistoryRow } from './History.interface';
-import { historyRows } from './History.constants';
+import { historyRowsList } from './History.constants';
+import { toast } from 'react-toastify';
+import { RootState } from '../../../../store';
+import { useSelector } from 'react-redux';
 
 export const HistoryContainer = () => {
   const [sortOption, setSortOption] = useState('date-desc');
   const [searchValue, setSearchValue] = useState('');
+  const [historyRows, setHistoryRows] = useState<HistoryRow[]>([]);
+  const username = useSelector((state: RootState) => state.header.userDetails.name);
 
-  const isHistoryRowsEmpty = (rows: HistoryRow[]): boolean => {
-    return rows.length === 0;
+  useEffect(() => {
+    getHistoryList();
+  });
+
+  const getHistoryList = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_APIPORT}/history/${username}`
+      );
+      if (!response.ok) {
+        toast.error('Error while loading the history');
+        return;
+      }
+
+      const data: HistoryRow[] = await response.json();
+      setHistoryRows(data);
+    } catch {
+      setHistoryRows(historyRowsList);
+      toast.error('Error occured while fetching the history');
+    }
   };
 
   const filteredAndSortedRows = useMemo(() => {
@@ -15,9 +38,8 @@ export const HistoryContainer = () => {
 
     if (searchValue) {
       const searchLower = searchValue.toLowerCase();
-      filteredRows = filteredRows.filter(
-        (row) =>
-          row.fileName.toLowerCase().includes(searchLower)
+      filteredRows = filteredRows.filter((row) =>
+        row.fileName.toLowerCase().includes(searchLower)
       );
     }
 
@@ -44,14 +66,14 @@ export const HistoryContainer = () => {
     });
 
     return filteredRows;
-  }, [searchValue, sortOption]);
+  }, [historyRows, searchValue, sortOption]);
 
   return {
-    isHistoryRowsEmpty,
     sortOption,
     setSortOption,
     searchValue,
     setSearchValue,
     filteredAndSortedRows,
+    getHistoryList,
   };
 };

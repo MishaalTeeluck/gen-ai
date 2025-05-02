@@ -11,17 +11,10 @@ import { LuFileText, LuClock } from 'react-icons/lu';
 import { BackButtonComponent } from '../../../../shared/components/BackButton/BackButton.component';
 import { DropzoneComponent } from '../../../../shared/components/Dropzone/Dropzone.component';
 import { UploadFileContainer } from './UploadFile.container';
-import { useDispatch } from 'react-redux';
-import { setHeaderTitle } from '../../../../store/headerSlice';
-import { useEffect } from 'react';
+import { UploadSuccessAnimation } from './UploadSuccessAnimation';
 
 export const UploadFileComponent = () => {
   const handler = UploadFileContainer();
-
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(setHeaderTitle('Test Plan Generator : Upload Document'));
-  }, [dispatch]);
 
   return (
     <>
@@ -32,7 +25,11 @@ export const UploadFileComponent = () => {
         justifyContent='center'
       >
         <Box width='100%' maxW='lg'>
-          <DropzoneComponent setUploadedFile={handler.setUploadedFile} />
+          {handler.isUploading ? (
+            <UploadSuccessAnimation onClickHandler={handler.handleNewUpload} etaSeconds={90} />
+          ) : (
+            <DropzoneComponent setUploadedFile={handler.setUploadedFile} />
+          )}
         </Box>
 
         <HStack mt='8' width='100%' maxW='md' justify='space-between'>
@@ -46,6 +43,7 @@ export const UploadFileComponent = () => {
             maxW='40%'
             height='auto'
             _hover={{ bg: 'gray.100' }}
+            disabled={handler.isUploading}
           >
             <VStack>
               <Icon as={LuFileText} boxSize={6} color='black' />
