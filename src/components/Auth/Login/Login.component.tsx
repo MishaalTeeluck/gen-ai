@@ -13,7 +13,7 @@ import { PasswordInput } from '../../../shared/components/PasswordInput/password
 import { LoginContainer } from './Login.container';
 
 interface FormValues {
-  username: string;
+  email: string;
   password: string;
 }
 
@@ -26,7 +26,7 @@ export const LoginComponent = () => {
 
   const handler = LoginContainer();
   const onSubmit = handleSubmit((data) => {
-    handler.dummyHandleLogin(data.username, data.password);
+    handler.handleLogin(data.email, data.password);
   });
 
   return (
@@ -44,16 +44,16 @@ export const LoginComponent = () => {
 
           <form onSubmit={onSubmit}>
             <Stack gap='4'>
-              <Field.Root invalid={!!errors.username}>
+              <Field.Root invalid={!!errors.email}>
                 <Field.Label>
-                  Username <Field.RequiredIndicator />
+                  Email <Field.RequiredIndicator />
                 </Field.Label>
                 <Input
-                  {...register('username')}
+                  {...register('email')}
                   css={{ '--focus-color': 'blue' }}
                 />
-                <Field.ErrorText>Username field is required</Field.ErrorText>
-                <Field.ErrorText>{errors.username?.message}</Field.ErrorText>
+                <Field.ErrorText>Email field is required</Field.ErrorText>
+                <Field.ErrorText>{errors.email?.message}</Field.ErrorText>
               </Field.Root>
 
               <Field.Root invalid={!!errors.password}>

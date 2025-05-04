@@ -4,12 +4,15 @@ import { historyRowsList } from './History.constants';
 import { toast } from 'react-toastify';
 import { RootState } from '../../../../store';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 export const HistoryContainer = () => {
   const [sortOption, setSortOption] = useState('date-desc');
   const [searchValue, setSearchValue] = useState('');
   const [historyRows, setHistoryRows] = useState<HistoryRow[]>([]);
-  const username = useSelector((state: RootState) => state.header.userDetails.name);
+  const token = useSelector((state: RootState) => state.header.token);
+  const { toolId } = useParams();
 
   useEffect(() => {
     getHistoryList();
@@ -17,19 +20,16 @@ export const HistoryContainer = () => {
 
   const getHistoryList = async () => {
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_APIPORT}/history/${username}`
+      const response = await axios.get<HistoryRow[]>(
+        `${import.meta.env.VITE_APIPORT}/jobs/list/${toolId!}`,
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-      if (!response.ok) {
-        toast.error('Error while loading the history');
-        return;
-      }
 
-      const data: HistoryRow[] = await response.json();
+      const data: HistoryRow[] = response.data;
       setHistoryRows(data);
     } catch {
       setHistoryRows(historyRowsList);
-      toast.error('Error occured while fetching the history');
+      toast.error('Error occurred while fetching the history');
     }
   };
 

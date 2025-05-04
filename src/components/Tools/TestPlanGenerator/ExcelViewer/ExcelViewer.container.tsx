@@ -3,11 +3,16 @@ import { GridColumns, RowData } from './ExcelViewer.interface';
 import ExcelJS from 'exceljs';
 import { RowsChangeData, textEditor } from 'react-data-grid';
 import { toast } from 'react-toastify';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../store';
 
 export const ExcelViewerContainer = () => {
   const [columns, setColumns] = useState<GridColumns[]>([]);
   const [rows, setRows] = useState<RowData[]>([]);
   const [loaded, setLoaded] = useState(false);
+
+  const token = useSelector((state: RootState) => state.header.token);
 
   const handleBlob = async (blob: Blob) => {
     const workbook = new ExcelJS.Workbook();
@@ -62,20 +67,22 @@ export const ExcelViewerContainer = () => {
     await handleBlob(file);
   };
 
-  const handleFetchExcelBlob = async () => {
+  const handleFetchExcelBlob = async (jobId: string) => {
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_APIPORT}/api/path-to-excel-download`
+      const response = await axios.get(
+        `${import.meta.env.VITE_APIPORT}/jobs/${jobId}/download`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          responseType: 'blob',
+        }
       );
 
-      if (!response.ok) {
-        toast.error('Failed to download the Excel file.');
-      }
-
-      const blob = await response.blob();
-      await handleBlob(blob);
-    } catch {
-      toast.error('Could not fetch and parse the Excel file.');
+      await handleBlob(response.data);
+    } catch (error) {
+      console.error(error);
+      toast.error('Could not fetch and download the Excel file.');
     }
   };
 

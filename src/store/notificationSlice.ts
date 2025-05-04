@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface Notification {
   id: string;
+  job_id: string;
   title: string;
   read: boolean;
 }

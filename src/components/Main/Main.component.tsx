@@ -7,17 +7,17 @@ export const MainComponent = () => {
 
   return (
     <Stack direction={{ base: 'column', md: 'row' }} gap='3' wrap='wrap'>
-      {mainHandler.filteredTools.map((item, index) => (
+      {mainHandler.filteredTools.map((item) => (
         <GenAICardComponent
-          key={index}
+          key={item.toolDetail.id}
           name={item.toolDetail.name}
           description={item.toolDetail.description}
-          numOfQueues={item.toolDetail.numOfQueues}
+          numOfQueues={item.toolDetail.job}
           eta={item.toolDetail.eta}
           link={
             item.routeLocation !== undefined || '' ? item.routeLocation : '#'
           }
-          status={item.toolDetail.status}
+          status={item.toolDetail.available}
         />
       ))}
     </Stack>

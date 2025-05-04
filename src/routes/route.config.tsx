@@ -27,15 +27,15 @@ const router = createBrowserRouter([
         element: <PrivateRoute />,
         children: [
           {
-            path: '/tools/testplangenerator/uploadfile',
+            path: '/tools/:toolId/uploadfile',
             element: <UploadFileComponent />,
           },
           {
-            path: '/tools/testplangenerator/result',
+            path: '/tools/:toolId/result/:jobId',
             element: <ExcelViewerComponent />,
           },
           {
-            path: '/tools/testplangenerator/history',
+            path: '/tools/:toolId/history',
             element: <HistoryComponent />,
           },
           {

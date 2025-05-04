@@ -27,7 +27,7 @@ export const GenAICardComponent = (props: GenAIToolCardProps) => {
                 <>
                   <Box display='inline-flex'>
                     <Alert.Root
-                      status={props.eta === '0' ? 'neutral' : 'warning'}
+                      status={props.eta === 0 ? 'neutral' : 'warning'}
                       size='sm'
                       style={{ padding: '5px', width: 'fit-content' }}
                     >
@@ -35,7 +35,7 @@ export const GenAICardComponent = (props: GenAIToolCardProps) => {
                         <TbClockCog />
                       </Alert.Indicator>
                       <Alert.Title>
-                        {props.eta === '0' ? 'Nil' : `${props.eta} minute left`}
+                        {props.eta === 0 ? 'Nil' : `${props.eta} minute left`}
                       </Alert.Title>
                     </Alert.Root>
                   </Box>

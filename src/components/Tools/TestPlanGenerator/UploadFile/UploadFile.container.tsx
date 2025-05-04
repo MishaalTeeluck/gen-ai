@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { setHeaderTitle } from '../../../../store/headerSlice';
+import axios from 'axios';
 
 export const UploadFileContainer = () => {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [jobId, setJobId] = useState('');
+  const { toolId } = useParams();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -30,20 +33,20 @@ export const UploadFileContainer = () => {
       const formData = new FormData();
       formData.append('file', uploadedFile);
 
-      const response = await fetch('/api/upload-excel', {
-        method: 'POST',
-        body: formData,
-      });
+      const reponse = await axios.post(
+        `${import.meta.env.VITE_APIPORT}/jobs/${toolId}`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        toast.error(`Upload failed: ${errorText || 'Server error occurred'}`);
-        return;
-      }
+      setJobId(reponse.data ?? '');
 
-      toast.success('✅ File uploaded successfully! Processing started...');
-    } catch (error) {
-      console.error('Upload error:', error);
+      toast.success('File uploaded successfully! Processing started...');
+    } catch {
       toast.error('An unexpected error occurred. Please try again.');
     } finally {
       setIsUploading(true);
@@ -51,7 +54,7 @@ export const UploadFileContainer = () => {
   };
 
   const navigateToHistory = () => {
-    navigate('/tools/testplangenerator/history');
+    navigate(`/tools/${toolId!}/history`);
   };
 
   const handleNewUpload = () => {
@@ -60,6 +63,7 @@ export const UploadFileContainer = () => {
   };
 
   return {
+    jobId,
     navigateToHistory,
     setUploadedFile,
     handleGenerateClick,

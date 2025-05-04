@@ -26,7 +26,10 @@ export const UploadFileComponent = () => {
       >
         <Box width='100%' maxW='lg'>
           {handler.isUploading ? (
-            <UploadSuccessAnimation onClickHandler={handler.handleNewUpload} etaSeconds={90} />
+            <UploadSuccessAnimation
+              onClickHandler={handler.handleNewUpload}
+              jobId={handler.jobId}
+            />
           ) : (
             <DropzoneComponent setUploadedFile={handler.setUploadedFile} />
           )}

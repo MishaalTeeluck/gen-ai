@@ -4,7 +4,7 @@ import { CheckCircle } from 'lucide-react';
 
 type Props = {
   onClickHandler: () => void;
-  etaSeconds?: number;
+  jobId?: string;
 };
 
 const textVariants = {
@@ -37,10 +37,7 @@ const iconVariants = {
   },
 };
 
-export const UploadSuccessAnimation = ({
-  onClickHandler,
-  etaSeconds,
-}: Props) => {
+export const UploadSuccessAnimation = ({ onClickHandler, jobId }: Props) => {
   return (
     <AnimatePresence>
       <motion.div
@@ -87,7 +84,7 @@ export const UploadSuccessAnimation = ({
               exit='exit'
             >
               <Text color='gray.600'>
-                Estimated processing time: <strong>{etaSeconds}s</strong>
+                Job ID: <strong>{jobId}</strong>
               </Text>
             </motion.div>
 

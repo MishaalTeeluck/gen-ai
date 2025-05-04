@@ -1,16 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { ToolLink, ToolsDetails } from './Main.interface';
-import { genAITools, routeMap } from './Main.constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { setHeaderTitle } from '../../store/headerSlice';
 import { RootState } from '../../store';
+import axios from 'axios';
 
 export const MainContainer = () => {
   const [tools, setTools] = useState<ToolLink[]>([]);
   const [loading, setLoading] = useState(true);
   const hasFetched = useRef(false);
+
   const dispatch = useDispatch();
+  const token = useSelector((state: RootState) => state.header.token);
 
   const searchValue = useSelector(
     (state: RootState) => state.header.searchValue
@@ -24,28 +26,30 @@ export const MainContainer = () => {
 
   const fetchToolsDetails = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_APIPORT}/getTools`);
-      if (!response.ok) {
-        toast.error('Error while loading Gen AI Tools');
+      if (!token) {
+        toast.error('Error while getting user details');
+        setLoading(false);
         return;
       }
 
-      const data: ToolsDetails[] = await response.json();
+      const response = await axios.get<ToolsDetails[]>(
+        `${import.meta.env.VITE_APIPORT}/tools/me`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = response.data;
       const toolLinks: ToolLink[] = data.map((tool) => ({
         toolDetail: tool,
-        routeLocation: tool.status ? routeMap[tool.name] ?? '' : '',
+        routeLocation: tool.available ? `/tools/${tool.id}/uploadfile` : '',
       }));
 
       setTools(toolLinks);
     } catch {
-      const toolLinks: ToolLink[] = genAITools.map((tool) => ({
-        toolDetail: tool,
-        routeLocation: tool.status ? routeMap[tool.name] ?? '' : '',
-      }));
-
-      setTools(toolLinks);
-
-      toast.error('Error occured while fetching Tools list');
+      toast.error('Error occurred while fetching Tools list');
     } finally {
       setLoading(false);
     }
@@ -57,7 +61,7 @@ export const MainContainer = () => {
 
     dispatch(setHeaderTitle(''));
     fetchToolsDetails();
-  }, [dispatch]);
+  });
 
   return {
     searchValue,

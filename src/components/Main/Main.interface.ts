@@ -1,9 +1,10 @@
 export interface ToolsDetails {
+    id: string,
     name: string,
     description: string,
-    numOfQueues: string | number,
-    eta: string | number,
-    status: boolean
+    job: number,
+    eta: number,
+    available: boolean
 }
 
 export interface ToolLink {
