@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { RootState } from '../../store';
-import { setSearchValue } from '../../store/headerSlice';
+import { setSearchValue, setToken } from '../../store/headerSlice';
 
 export const HeaderContainer = () => {
   const dispatch = useDispatch();
@@ -21,11 +21,17 @@ export const HeaderContainer = () => {
     (state: RootState) => state.header.headerTitle
   );
 
+  const handleLogout = () => {
+    dispatch(setToken(null)); 
+    window.location.href = '/'; 
+  };
+
   return {
     location: componentLocation,
     searchValue,
     userDetails,
     handleSearchChange,
     headerTitle,
+    handleLogout
   };
 };

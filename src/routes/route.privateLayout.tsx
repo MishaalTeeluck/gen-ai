@@ -5,11 +5,15 @@ import Header from '../components/Header/Header.component';
 import { Bounce, ToastContainer } from 'react-toastify';
 import { useEffect } from 'react';
 import { startNotificationPolling } from '../shared/components/Notification/NotificationPolling';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store';
 
 export const PrivateLayout = () => {
+  const token = useSelector((state: RootState) => state.header.token);
+
   useEffect(() => {
-    startNotificationPolling();
-  }, []);
+    startNotificationPolling(token!);
+  }, [token]);
 
   return (
     <>

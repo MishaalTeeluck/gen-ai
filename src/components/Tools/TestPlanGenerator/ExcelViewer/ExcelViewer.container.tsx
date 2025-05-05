@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GridColumns, RowData } from './ExcelViewer.interface';
 import ExcelJS from 'exceljs';
 import { RowsChangeData, textEditor } from 'react-data-grid';
@@ -6,13 +6,19 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
+import { useParams } from 'react-router-dom';
 
 export const ExcelViewerContainer = () => {
   const [columns, setColumns] = useState<GridColumns[]>([]);
   const [rows, setRows] = useState<RowData[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const { jobId } = useParams();
 
   const token = useSelector((state: RootState) => state.header.token);
+
+  useEffect(() => {
+    handleFetchExcelBlob();
+  });
 
   const handleBlob = async (blob: Blob) => {
     const workbook = new ExcelJS.Workbook();
@@ -67,10 +73,10 @@ export const ExcelViewerContainer = () => {
     await handleBlob(file);
   };
 
-  const handleFetchExcelBlob = async (jobId: string) => {
+  const handleFetchExcelBlob = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_APIPORT}/jobs/${jobId}/download`,
+        `${import.meta.env.VITE_APIPORT}/data/output/${jobId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

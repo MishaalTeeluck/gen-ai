@@ -1,10 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import UserIcon from '../assets/user.png';
-import { jwtDecode } from 'jwt-decode';
 
 interface UserDetails {
-  name: string;
-  position: string;
+  id: string;
+  firstName: string;
+  lastName: string;
+  roleName: string;
+  email: string;
   avatar: string;
 }
 
@@ -15,51 +17,34 @@ interface HeaderState {
   headerTitle: string;
 }
 
-interface JwtPayload {
-  name?: string;
-  username?: string;
-  role?: string;
-  exp?: number;
-  [key: string]: unknown;
-}
-
-function isTokenExpired(token: string): boolean {
-  try {
-    const decoded = jwtDecode<JwtPayload>(token);
-    if (!decoded.exp) return true;
-    return decoded.exp * 1000 < Date.now();
-  } catch {
-    return true;
-  }
-}
-
 function getInitialState(): HeaderState {
   const storedToken = localStorage.getItem('token');
 
-  if (storedToken && !isTokenExpired(storedToken)) {
-    try {
-      const decoded = jwtDecode<JwtPayload>(storedToken);
-      return {
-        searchValue: '',
-        userDetails: {
-          name: decoded.name ?? 'Unknown',
-          position: decoded.role ?? 'User',
-          avatar: UserIcon,
-        },
-        token: storedToken,
-        headerTitle: '',
-      };
-    } catch {
-      localStorage.removeItem('token');
-    }
+  if (storedToken) {
+    return {
+      searchValue: '',
+      userDetails: {
+        id: '',
+        firstName: '',
+        lastName: '',
+        roleName: '',
+        email: '',
+        avatar: UserIcon,
+      },
+      token: storedToken,
+      headerTitle: '',
+    };
   }
 
   localStorage.removeItem('token');
   return {
     searchValue: '',
     userDetails: {
-      name: 'Username',
-      position: 'Position',
+      id: '',
+      firstName: '',
+      lastName: '',
+      roleName: '',
+      email: '',
       avatar: UserIcon,
     },
     token: null,
@@ -80,28 +65,11 @@ const headerSlice = createSlice({
     setToken: (state, action: PayloadAction<string | null>) => {
       state.token = action.payload;
 
-      if (action.payload && !isTokenExpired(action.payload)) {
+      if (action.payload) {
         localStorage.setItem('token', action.payload);
-        try {
-          const decoded = jwtDecode<JwtPayload>(action.payload);
-          state.userDetails = {
-            name: decoded.name ?? 'Unknown',
-            position: decoded.role ?? 'User',
-            avatar: UserIcon,
-          };
-        } catch (e) {
-          console.error('Invalid token:', e);
-          localStorage.removeItem('token');
-          state.token = null;
-        }
       } else {
         localStorage.removeItem('token');
         state.token = null;
-        state.userDetails = {
-          name: 'User name',
-          position: 'Position',
-          avatar: UserIcon,
-        };
       }
     },
     setHeaderTitle: (state, action: PayloadAction<string>) => {

@@ -26,7 +26,7 @@ export const historyTableColumns: Column<HistoryRow>[] = [
     width: 120,
     renderCell: ({ row }) => (
       <Badge
-      colorPalette={getStatusColor(row.status)}
+        colorPalette={getStatusColor(row.status)}
         px={2}
         py={1}
         borderRadius='md'
@@ -36,7 +36,7 @@ export const historyTableColumns: Column<HistoryRow>[] = [
     ),
   },
   {
-    key: 'date',
+    key: 'createdAt',
     name: 'Date',
     sortable: true,
     resizable: true,
@@ -48,9 +48,14 @@ export const historyTableColumns: Column<HistoryRow>[] = [
     resizable: true,
     width: 100,
     renderCell: ({ row }) =>
-      row.download ? (
+      row.status == 'COMPLETED' ? (
         <a href={row.download} download>
-          <IconButton aria-label='Download file' colorScheme='blue' size='sm' variant='ghost'>
+          <IconButton
+            aria-label='Download file'
+            colorScheme='blue'
+            size='sm'
+            variant='ghost'
+          >
             <FaDownload />
           </IconButton>
         </a>
@@ -70,46 +75,13 @@ export const historyTableColumns: Column<HistoryRow>[] = [
 
 const getStatusColor = (status: string) => {
   switch (status) {
-    case 'Success':
+    case 'COMPLETED':
       return 'green';
-    case 'Processing':
+    case 'CREATED':
       return 'orange';
-    case 'Failed':
+    case 'FAILED':
       return 'red';
     default:
       return 'gray';
   }
 };
-
-export const historyRowsList: HistoryRow[] = [
-  {
-    fileName: 'LoginModule_generated_test_plan.xlsx',
-    status: 'Success',
-    date: '2025-04-25',
-    download: '/downloads/LoginModule_generated_test_plan.xlsx',
-  },
-  {
-    fileName: 'PaymentGateway_generated_test_plan.xlsx',
-    status: 'Processing',
-    date: '2025-04-26',
-    download: '',
-  },
-  {
-    fileName: 'UserProfile_generated_test_plan.xlsx',
-    status: 'Failed',
-    date: '2025-04-24',
-    download: '',
-  },
-  {
-    fileName: 'NotificationService_generated_test_plan.xlsx',
-    status: 'Success',
-    date: '2025-04-23',
-    download: '/downloads/NotificationService_generated_test_plan.xlsx',
-  },
-  {
-    fileName: 'AnalyticsDashboard_generated_test_plan.xlsx',
-    status: 'Success',
-    date: '2025-04-22',
-    download: '/downloads/AnalyticsDashboard_generated_test_plan.xlsx',
-  },
-];

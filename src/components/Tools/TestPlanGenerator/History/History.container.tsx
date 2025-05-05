@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import { HistoryRow } from './History.interface';
-import { historyRowsList } from './History.constants';
 import { toast } from 'react-toastify';
 import { RootState } from '../../../../store';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { format } from 'date-fns';
 
 export const HistoryContainer = () => {
   const [sortOption, setSortOption] = useState('date-desc');
@@ -25,10 +25,18 @@ export const HistoryContainer = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      const data: HistoryRow[] = response.data;
-      setHistoryRows(data);
+      const rawData = response.data;
+
+      const formattedData: HistoryRow[] = rawData.map((item) => ({
+        id: item.id,
+        fileName: item.fileName,
+        status: item.status,
+        createdAt: format(new Date(item.createdAt), 'dd/MM/yyyy HH:mm'),
+        download: `/api/download/${item.fileName}`,
+      }));
+
+      setHistoryRows(formattedData);
     } catch {
-      setHistoryRows(historyRowsList);
       toast.error('Error occurred while fetching the history');
     }
   };
@@ -56,8 +64,8 @@ export const HistoryContainer = () => {
         valueA = a.fileName.toLowerCase();
         valueB = b.fileName.toLowerCase();
       } else if (sortBy === 'date') {
-        valueA = new Date(a.date).getTime();
-        valueB = new Date(b.date).getTime();
+        valueA = new Date(a.createdAt).getTime();
+        valueB = new Date(b.createdAt).getTime();
       }
 
       if (valueA < valueB) return sortOrder === 'asc' ? -1 : 1;

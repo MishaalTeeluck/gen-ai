@@ -1,10 +1,19 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { Box, Text, VStack, Button, Icon } from '@chakra-ui/react';
+import {
+  Box,
+  Text,
+  VStack,
+  Button,
+  Icon,
+  Spinner,
+  Center,
+} from '@chakra-ui/react';
 import { CheckCircle } from 'lucide-react';
 
 type Props = {
   onClickHandler: () => void;
   jobId?: string;
+  isLoading?: boolean; // NEW PROP
 };
 
 const textVariants = {
@@ -37,7 +46,11 @@ const iconVariants = {
   },
 };
 
-export const UploadSuccessAnimation = ({ onClickHandler, jobId }: Props) => {
+export const UploadStatusAnimation = ({
+  onClickHandler,
+  jobId,
+  isLoading = false,
+}: Props) => {
   return (
     <AnimatePresence>
       <motion.div
@@ -47,11 +60,12 @@ export const UploadSuccessAnimation = ({ onClickHandler, jobId }: Props) => {
         transition={{ duration: 0.6 }}
       >
         <Box
-          border='2px solid green'
+          border='2px solid'
+          borderColor={isLoading ? 'blue.400' : 'green.500'}
           borderRadius='xl'
           p={6}
           textAlign='center'
-          bg='green.50'
+          bg={isLoading ? 'blue.50' : 'green.50'}
           boxShadow='md'
         >
           <VStack>
@@ -61,7 +75,13 @@ export const UploadSuccessAnimation = ({ onClickHandler, jobId }: Props) => {
               animate='visible'
               exit='exit'
             >
-              <Icon as={CheckCircle} boxSize={12} color='green.500' />
+              {isLoading ? (
+                <Center>
+                  <Spinner color='blue.400' size='xl' />
+                </Center>
+              ) : (
+                <Icon as={CheckCircle} boxSize={12} color='green.500' />
+              )}
             </motion.div>
 
             <motion.div
@@ -71,46 +91,55 @@ export const UploadSuccessAnimation = ({ onClickHandler, jobId }: Props) => {
               animate='visible'
               exit='exit'
             >
-              <Text fontSize='2xl' fontWeight='bold' color='green.700'>
-                Upload Successful!
+              <Text
+                fontSize='2xl'
+                fontWeight='bold'
+                color={isLoading ? 'blue.700' : 'green.700'}
+              >
+                {isLoading ? 'Processing File...' : 'Upload Successful!'}
               </Text>
             </motion.div>
 
-            <motion.div
-              custom={1}
-              variants={textVariants}
-              initial='hidden'
-              animate='visible'
-              exit='exit'
-            >
-              <Text color='gray.600'>
-                Job ID: <strong>{jobId}</strong>
-              </Text>
-            </motion.div>
+            {!isLoading && (
+              <>
+                <motion.div
+                  custom={1}
+                  variants={textVariants}
+                  initial='hidden'
+                  animate='visible'
+                  exit='exit'
+                >
+                  <Text color='gray.600'>
+                    Job ID: <strong>{jobId}</strong>
+                  </Text>
+                </motion.div>
 
-            <motion.div
-              custom={2}
-              variants={textVariants}
-              initial='hidden'
-              animate='visible'
-              exit='exit'
-            >
-              <Text fontWeight='light' fontSize='sm' color='gray.600'>
-                You’ll be notified once the test plan generation is complete.
-              </Text>
-            </motion.div>
+                <motion.div
+                  custom={2}
+                  variants={textVariants}
+                  initial='hidden'
+                  animate='visible'
+                  exit='exit'
+                >
+                  <Text fontWeight='light' fontSize='sm' color='gray.600'>
+                    You’ll be notified once the test plan generation is
+                    complete.
+                  </Text>
+                </motion.div>
 
-            <motion.div
-              custom={3}
-              variants={textVariants}
-              initial='hidden'
-              animate='visible'
-              exit='exit'
-            >
-              <Button colorScheme='green' onClick={onClickHandler}>
-                Upload New Document
-              </Button>
-            </motion.div>
+                <motion.div
+                  custom={3}
+                  variants={textVariants}
+                  initial='hidden'
+                  animate='visible'
+                  exit='exit'
+                >
+                  <Button colorScheme='green' onClick={onClickHandler}>
+                    Upload New Document
+                  </Button>
+                </motion.div>
+              </>
+            )}
           </VStack>
         </Box>
       </motion.div>

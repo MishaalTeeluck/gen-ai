@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import { setToken } from '../../../store/headerSlice';
+import { setToken, setUserDetails } from '../../../store/headerSlice';
 import { toast } from 'react-toastify';
 import axios, { AxiosError } from 'axios';
 
@@ -30,6 +30,8 @@ export const LoginContainer = () => {
         toast.success(message ?? 'Successful login');
 
         dispatch(setToken(accessToken));
+        getUserDetails(accessToken);
+
         navigate('/app');
       } else {
         toast.error('Invalid credentials');
@@ -44,6 +46,27 @@ export const LoginContainer = () => {
     }
   };
 
+  const getUserDetails = async (accessToken: string) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_APIPORT}/users/me`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      const data = response.data;
+      console.log(data)
+
+      if (data) {
+        dispatch(setUserDetails(data));
+      }
+    } catch {
+      toast.error('An error occurred while getting user details.');
+    }
+  };
 
   return {
     handleLogin,

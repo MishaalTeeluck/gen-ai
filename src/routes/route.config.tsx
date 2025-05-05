@@ -31,7 +31,7 @@ const router = createBrowserRouter([
             element: <UploadFileComponent />,
           },
           {
-            path: '/tools/:toolId/result/:jobId',
+            path: '/jobs/:jobId',
             element: <ExcelViewerComponent />,
           },
           {

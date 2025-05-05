@@ -11,7 +11,7 @@ import { LuFileText, LuClock } from 'react-icons/lu';
 import { BackButtonComponent } from '../../../../shared/components/BackButton/BackButton.component';
 import { DropzoneComponent } from '../../../../shared/components/Dropzone/Dropzone.component';
 import { UploadFileContainer } from './UploadFile.container';
-import { UploadSuccessAnimation } from './UploadSuccessAnimation';
+import { UploadStatusAnimation } from './UploadSuccessAnimation';
 
 export const UploadFileComponent = () => {
   const handler = UploadFileContainer();
@@ -26,7 +26,8 @@ export const UploadFileComponent = () => {
       >
         <Box width='100%' maxW='lg'>
           {handler.isUploading ? (
-            <UploadSuccessAnimation
+            <UploadStatusAnimation
+              isLoading={handler.isLoading}
               onClickHandler={handler.handleNewUpload}
               jobId={handler.jobId}
             />

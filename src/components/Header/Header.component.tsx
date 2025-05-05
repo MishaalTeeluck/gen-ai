@@ -1,8 +1,9 @@
-import { LuSearch } from 'react-icons/lu';
+import { LuLogOut, LuSearch } from 'react-icons/lu';
 import { TextField } from '../../shared/components/TextField/TextField.component';
 import {
   Avatar,
   Box,
+  Button,
   Container,
   Flex,
   HStack,
@@ -65,20 +66,28 @@ const Header = () => {
               width='20px'
             />
             <NotificationMenu />
-            <HStack width={'150px'}>
+            <HStack minWidth='150px' maxWidth='250px'>
               <Avatar.Root>
-                <Avatar.Fallback name={userDetails.name} />
+                <Avatar.Fallback name={userDetails.firstName} />
                 <Avatar.Image src={userDetails.avatar} width='30px' />
               </Avatar.Root>
               <Stack align='flex-start'>
                 <Text fontWeight='medium' fontSize='sm'>
-                  {userDetails.name}
+                  {userDetails.firstName} {userDetails.lastName}
                 </Text>
                 <Text color='gray.500' fontSize='xs'>
-                  {userDetails.position}
+                  {userDetails.roleName}
                 </Text>
               </Stack>
             </HStack>
+            <Button
+              size='sm'
+              colorScheme='red'
+              variant='outline'
+              onClick={headerHandler.handleLogout}
+            >
+              <LuLogOut /> Logout
+            </Button>
           </HStack>
         </Flex>
       </Container>

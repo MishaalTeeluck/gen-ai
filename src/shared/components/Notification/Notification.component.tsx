@@ -3,6 +3,7 @@ import { Button, IconButton, Menu, Portal, Box, Text } from '@chakra-ui/react';
 import { LuBell } from 'react-icons/lu';
 import { RootState } from '../../../store';
 import { markAsRead } from '../../../store/notificationSlice';
+import { useNavigate } from 'react-router-dom';
 
 export const NotificationMenu = () => {
   const dispatch = useDispatch();
@@ -13,6 +14,8 @@ export const NotificationMenu = () => {
   const handleMarkAsRead = (id: string) => {
     dispatch(markAsRead(id));
   };
+
+  const navigate = useNavigate();
 
   return (
     <Menu.Root>
@@ -41,8 +44,11 @@ export const NotificationMenu = () => {
                 {notifications.map((notif) => (
                   <Menu.Item
                     key={notif.id}
-                    value={notif.id}
-                    onClick={() => handleMarkAsRead(notif.id)}
+                    value={notif.job_id}
+                    onClick={() => {
+                      handleMarkAsRead(notif.id);
+                      navigate(`/jobs/${notif.job_id}`);
+                    }}
                     style={{
                       fontWeight: notif.read ? 'normal' : 'bold',
                     }}
